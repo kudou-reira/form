@@ -1,0 +1,1 @@
+export const FETCH_MEAL_CATEGORY = 'fetch_meal_category';
