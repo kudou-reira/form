@@ -1,1 +1,1 @@
-import { FETCH_MEAL_CATEGORY } from './types';
+import { FETCH_MEALTIME } from './types';

@@ -1,1 +1,1 @@
-export const FETCH_MEAL_CATEGORY = 'fetch_meal_category';
+export const FETCH_MEALTIME = 'fetch_mealtime';
