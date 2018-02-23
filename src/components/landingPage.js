@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { css } from 'emotion';
-import { DropdownButton, MenuItem } from 'react-bootstrap';
-import data from '../lib/dishes.json';
+import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import * as actions from '../actions';
+// import { withRouter } from 'react-router';
 
 const containerOverall = css`
 	margin-top: 1%;
@@ -9,7 +11,13 @@ const containerOverall = css`
 const containerItem = css`
 	margin-top: 1%;
 	margin:0 auto;
-	width: 22%;
+	width: 25%;
+`
+
+const containerItem2 = css`
+	margin-top: 1%;
+	margin:0 auto;
+	width: 25%;
 `
 
 const divFlex = css`
@@ -27,35 +35,62 @@ const marginTop = css`
   margin-top: 2.5%;
 `
 
+const marginTop2 = css`
+  margin-top: 4%;
+`
+
 const marginTitle = css`
   margin-top: 2%;
+`
+
+const error = css`
+  color: red;
 `
 
 class LandingPage extends Component {
 	constructor() {
 		super();
-		this.state = {
-			mealSelect: "----"
-		}
 
 		this.onSelectMealtime = this.onSelectMealtime.bind(this);
+		this.onSelectCustomerNumber = this.onSelectCustomerNumber.bind(this);
+		this.onClickNext = this.onClickNext.bind(this);
 	}
 
+	// componentDidMount() {
+	// 	this.props.selectMealtime("----");
+	// 	this.props.selectPeople(1);
+	// }
+
 	onSelectMealtime(eventKey) {
-		this.setState({ 
-				mealSelect: eventKey 
-			}, ()=> {
-			console.log("this is the eventKey", eventKey);
-		})
+		this.props.selectMealtime(eventKey);
+	}
+
+	renderMealMessage() {
+		var mealMessage;
+		if(this.props.landing.mealtime === "----") {
+			mealMessage = (
+				<div className={leftItem}>
+					<p className={error}>
+						Please select a mealtime!
+					</p>
+				</div>
+			);
+		} else {
+			mealMessage = (
+				<div className={leftItem}>
+					Your mealtime has been selected:
+				</div>
+			);
+		}
+
+		return mealMessage;
 	}
 
 	renderMealtimeSelect() {
 		return(
 			<div className={containerItem}>
 				<div className={divFlex}>
-					<div className={leftItem}>
-						Please select a meal!
-					</div>
+					{this.renderMealMessage()}
 					<div>
 						{this.renderMealtimeDropdown()}
 					</div>
@@ -70,7 +105,7 @@ class LandingPage extends Component {
 		var orderedMeal = {};
 		var mealtimesMenuItem;
 
-		data.dishes.map((item) => {
+		this.props.data.data.dishes.forEach((item) => {
 			var availableMeals = item.availableMeals;
 			for(let meal of availableMeals) {
 				if(!(orderedMealtimes.some(item => item.mealtime === meal))) {
@@ -90,16 +125,22 @@ class LandingPage extends Component {
 							order: 2
 						}
 					}
-					orderedMealtimes.push(orderedMeal);
+
+					// only implemented for three mealtimes
+					if(orderedMealtimes.length === 0 || orderedMealtimes[orderedMealtimes.length-1].order < orderedMeal.order) {
+						orderedMealtimes.push(orderedMeal);
+					} else if(orderedMealtimes[orderedMealtimes.length-1].order > orderedMeal.order) {
+						orderedMealtimes.unshift(orderedMeal);
+					}
 				}
 			}
 		});
 
-		orderedMealtimes.sort(function(a, b){
-	    if(a.order < b.order) return -1;
-	    if(a.order > b.order) return 1;
-	    return 0;
-		})
+		// orderedMealtimes.sort(function(a, b){
+	 //    if(a.order < b.order) return -1;
+	 //    if(a.order > b.order) return 1;
+	 //    return 0;
+		// })
 
 		console.log("this is orderedMealtimes", orderedMealtimes);
 
@@ -118,30 +159,91 @@ class LandingPage extends Component {
 		return(
 			<DropdownButton
 		      bsStyle={"default"}
-		      title={this.state.mealSelect}
+		      title={this.props.landing.mealtime}
 		      id={"mealtime"}
 		    >
 		    	<MenuItem divider />
 		      {this.createMealtimesItem()}
-		    </DropdownButton>
+		  </DropdownButton>
 		);
+	}
+
+	onSelectCustomerNumber(eventKey) {
+		this.props.selectPeople(eventKey);
+	}
+
+	renderCustomerDropdown() {
+		// populate array first
+		var customerNumber = [];
+		var customerMenuItem = [];
+
+		for(var i = 1; i <= 10; i++) {
+			customerNumber.push(i);
+		}
+
+		customerMenuItem = customerNumber.map((num) => {
+			return(
+				<MenuItem eventKey={num} onSelect={this.onSelectCustomerNumber}>
+					{num}
+				</MenuItem>
+			);
+		});
+
+		return(
+			<DropdownButton
+	      bsStyle={"default"}
+	      title={this.props.landing.numberOfPeople}
+	      id={"customerNumber"}
+	    >
+	    	<MenuItem divider />
+	      {customerMenuItem}
+		  </DropdownButton>
+		);
+	}
+
+	onClickNext() {
+		console.log("this is onclicknext");
+		this.props.history.push('/restaurantPage');
+	}
+
+	renderNextButton() {
+		var nextButton;
+
+		nextButton = (
+			<div className={containerItem2}>
+				<div className={divFlex}>
+					<Button onClick={this.onClickNext}>
+						Next
+					</Button>
+				</div>
+			</div>
+		);
+
+		return nextButton;
 	}
 
 	renderCustomerSelection() {
 		return(
 			<div className={containerItem}>
-				Please enter the number of people
+				<div className={divFlex}>
+					<div className={leftItem}>
+						Please enter number of people:
+					</div>
+					<div>
+						{this.renderCustomerDropdown()}
+					</div>
+				</div>
 			</div>
 		);
 	}
 
 	render() {
-		console.log("this is dishes.json", data);
+		console.log("this is data reducer", this.props.data.data.dishes);
 
 		return(
 			<div className={containerOverall}>
 				<div className={marginTitle}>
-					Welcome to our restaurant
+					Welcome to our restaurant!
 				</div>
 				<div className={marginTop}>
 					{this.renderMealtimeSelect()}
@@ -149,9 +251,19 @@ class LandingPage extends Component {
 				<div className={marginTop}>
 					{this.renderCustomerSelection()}
 				</div>
+				<div className={marginTop2}>
+					{this.renderNextButton()}
+				</div>
 			</div>
 		);
 	}
 }
 
-export default LandingPage;
+function mapStateToProps(state) {
+	return {
+		landing: state.landing,
+		data: state.data
+	}
+}
+
+export default connect(mapStateToProps, actions)(LandingPage);
