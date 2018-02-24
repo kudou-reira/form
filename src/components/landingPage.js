@@ -3,7 +3,6 @@ import { css } from 'emotion';
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
-// import { withRouter } from 'react-router';
 
 const containerOverall = css`
 	margin-top: 1%;
@@ -51,15 +50,37 @@ class LandingPage extends Component {
 	constructor() {
 		super();
 
+		this.state = {
+			buttonDisable: false
+		}
+
 		this.onSelectMealtime = this.onSelectMealtime.bind(this);
 		this.onSelectCustomerNumber = this.onSelectCustomerNumber.bind(this);
 		this.onClickNext = this.onClickNext.bind(this);
 	}
 
-	// componentDidMount() {
-	// 	this.props.selectMealtime("----");
-	// 	this.props.selectPeople(1);
-	// }
+	componentDidMount() {
+		if(this.props.landing.mealtime === "----" || this.props.landing.numberOfPeople === "----") {
+			this.props.sendError(true);
+		} else {
+			this.props.sendError(false);
+		}
+	}
+
+ 	componentWillReceiveProps(nextProps){
+ 		console.log("this is nextProps", nextProps);
+    	if(nextProps.landing.mealtime !== this.props.landing.mealtime || 
+    		nextProps.landing.numberOfPeople !== this.props.landing.numberOfPeople) {
+    		if(nextProps.landing.mealtime === "----" || nextProps.landing.numberOfPeople === "----") {
+				this.props.sendError(true);
+			}
+			else {
+				console.log("there is no error");
+				this.props.sendError(false);
+				this.props.verifyLanding(true);
+			}
+    	}
+    }
 
 	onSelectMealtime(eventKey) {
 		this.props.selectMealtime(eventKey);
@@ -136,12 +157,6 @@ class LandingPage extends Component {
 			}
 		});
 
-		// orderedMealtimes.sort(function(a, b){
-	 //    if(a.order < b.order) return -1;
-	 //    if(a.order > b.order) return 1;
-	 //    return 0;
-		// })
-
 		console.log("this is orderedMealtimes", orderedMealtimes);
 
 		mealtimesMenuItem = orderedMealtimes.map((meal) => {
@@ -203,23 +218,66 @@ class LandingPage extends Component {
 
 	onClickNext() {
 		console.log("this is onclicknext");
+		this.props.sendPageIndex(2);
 		this.props.history.push('/restaurantPage');
 	}
 
 	renderNextButton() {
 		var nextButton;
 
-		nextButton = (
-			<div className={containerItem2}>
-				<div className={divFlex}>
-					<Button onClick={this.onClickNext}>
-						Next
-					</Button>
+		if(this.props.landing.mealtime === "----") {
+			// disable button
+			// send disable button to reducers as a boolean proof of error
+			nextButton = (
+				<div className={containerItem2}>
+					<div className={divFlex}>
+						<Button 
+							onClick={this.onClickNext}
+							disabled={this.props.error.error}
+						>
+							Next
+						</Button>
+					</div>
 				</div>
-			</div>
-		);
+			);
+
+		} else {
+			nextButton = (
+				<div className={containerItem2}>
+					<div className={divFlex}>
+						<Button 
+							onClick={this.onClickNext}
+							disabled={this.props.error.error}
+						>
+							Next
+						</Button>
+					</div>
+				</div>
+			);
+		}
 
 		return nextButton;
+	}
+
+	renderCustomerMessage() {
+		var customerMessage;
+		if(this.props.landing.numberOfPeople === "----") {
+			customerMessage = (
+				<div className={leftItem}>
+					<p className={error}>
+						Please select number of people!
+					</p>
+				</div>
+			);
+		} else {
+			customerMessage = (
+				<div className={leftItem}>
+					Your selected number of people is
+				</div>
+			);
+		}
+
+		return customerMessage;
 	}
 
 	renderCustomerSelection() {
@@ -227,7 +285,7 @@ class LandingPage extends Component {
 			<div className={containerItem}>
 				<div className={divFlex}>
 					<div className={leftItem}>
-						Please enter number of people:
+						{this.renderCustomerMessage()}
 					</div>
 					<div>
 						{this.renderCustomerDropdown()}
@@ -262,7 +320,8 @@ class LandingPage extends Component {
 function mapStateToProps(state) {
 	return {
 		landing: state.landing,
-		data: state.data
+		data: state.data,
+		error: state.error
 	}
 }
 

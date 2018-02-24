@@ -1,15 +1,15 @@
 import {
-  PAGE_INDEX
+  ERROR
 } from '../actions/types';
 
 const INITIAL_STATE = {
-	page: 1
+	error: true
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  	case PAGE_INDEX:
-  		return {...state, page: action.payload}
+  	case ERROR:
+  		return {...state, error: action.payload}
     default:
       return state;
   }
