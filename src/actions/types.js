@@ -1,6 +1,12 @@
 export const SELECT_MEALTIME = 'select_mealtime';
 export const SELECT_PEOPLE = 'select_people';
 export const SELECT_RESTAURANT = 'select_restaurant';
+export const SELECT_DISH = 'select_dish';
+export const SELECT_SERVINGS = 'select_servings';
+export const DISH_NUMBER = 'dish_number';
+export const SAVED_DISHES = 'saved_dishes';
+export const DISH_COLLECTION_ADD = 'dish_collection_add';
+export const DISH_COLLECTION_UPDATE = 'dish_collection_update';
 export const VERIFY_LANDING = 'verify_landing';
 export const VERIFY_RESTAURANT = 'verify_restaurant';
 export const PAGE_INDEX = 'page_index';

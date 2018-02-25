@@ -2,6 +2,11 @@ import {
 	SELECT_MEALTIME,
 	SELECT_PEOPLE,
 	SELECT_RESTAURANT,
+	SELECT_DISH,
+	SELECT_SERVINGS,
+	DISH_COLLECTION_UPDATE,
+	DISH_NUMBER,
+	SAVED_DISHES,
 	VERIFY_LANDING,
 	VERIFY_RESTAURANT,
 	PAGE_INDEX ,
@@ -41,6 +46,44 @@ export const verifyRestaurant = (verify) => {
 		type: VERIFY_RESTAURANT,
 		payload: verify
 	})
+}
+
+export const selectDish = (dish) => {
+	return({
+		type: SELECT_DISH,
+		payload: dish
+	})
+}
+
+export const dishCollectionUpdate = (eventKey, id) => {
+	return({
+		type: DISH_COLLECTION_UPDATE,
+		payload: {
+			eventKey,
+			id
+		}
+	})
+}
+
+export const selectServings = (servings) => {
+	return({
+		type: SELECT_SERVINGS,
+		payload: servings
+	});
+}
+
+export const saveDish = (dish) => {
+	return({
+		type: SAVED_DISHES,
+		payload: dish
+	})
+}
+
+export const addDish = (num) => {
+	return({
+		type: DISH_NUMBER,
+		payload: num
+	});
 }
 
 export const sendPageIndex = (index) => {

@@ -3,6 +3,7 @@ import landingReducer from './landingReducer';
 import restaurantReducer from './restaurantReducer';
 import pageIndexReducer from './pageIndexReducer';
 import dataReducer from './dataReducer';
+import dishReducer from './dishReducer';
 import errorReducer from './errorReducer';
 
 export default combineReducers({
@@ -10,6 +11,7 @@ export default combineReducers({
 	restaurant: restaurantReducer,
 	pageIndex: pageIndexReducer,
 	data: dataReducer,
+	dish: dishReducer,
 	error: errorReducer
 });
 

@@ -47,7 +47,6 @@ const error = css`
 `
 
 class RestaurantPage extends Component {
-
 	constructor() {
 		super();
 
@@ -111,7 +110,6 @@ class RestaurantPage extends Component {
 					</div>
 				</div>
 			);
-
 		} else {
 			nextButton = (
 				<div className={containerItem2}>
@@ -171,7 +169,7 @@ class RestaurantPage extends Component {
 		} else {
 			restaurantMessage = (
 				<div className={leftItem}>
-					Your restaurant has been selected
+					Your restaurant has been selected: 
 				</div>
 			);
 		}
@@ -198,12 +196,11 @@ class RestaurantPage extends Component {
 
 	createRestaurantItem() {
 		var restaurants = [];
-
 		this.props.data.data.dishes.forEach((restaurant) => {
 			if(restaurant.availableMeals.includes(this.props.landing.mealtime) && !restaurants.includes(restaurant.restaurant)) {
 				restaurants.push(restaurant.restaurant);
 			}
-		}) 
+		}); 
 
 		restaurants = restaurants.map((restaurant) => {
 			return(
