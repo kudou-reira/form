@@ -47,7 +47,17 @@ class Header extends Component {
 		// have to make this sliding
 		// put the verification for verifyLanding at the last
 		// this is because you want to check whichever one is the most recently verified
-		if(this.props.restaurant.verifyRestaurant) {
+		if(this.props.dish.verifyDishes) {
+			availableButtons = (
+				<ToggleButtonGroup type="radio" name="options" value={this.props.pageIndex.page}>
+					<ToggleButton value={1} onChange={this.onClickToggle} disabled={false}>Step 1</ToggleButton>
+		      <ToggleButton value={2} onChange={this.onClickToggle} disabled={false}>Step 2</ToggleButton>
+		      <ToggleButton value={3} onChange={this.onClickToggle} disabled={false}>Step 3</ToggleButton>
+		      <ToggleButton value={4} onChange={this.onClickToggle} disabled={false}>Review</ToggleButton>
+	      </ToggleButtonGroup>
+			);
+		}
+		else if(this.props.restaurant.verifyRestaurant) {
 			availableButtons = (
 				<ToggleButtonGroup type="radio" name="options" value={this.props.pageIndex.page}>
 					<ToggleButton value={1} onChange={this.onClickToggle} disabled={false}>Step 1</ToggleButton>
@@ -94,7 +104,8 @@ function mapStateToProps(state) {
 		pageIndex: state.pageIndex,
 		error: state.error,
 		landing: state.landing,
-		restaurant: state.restaurant
+		restaurant: state.restaurant,
+		dish: state.dish
 	}
 }
 

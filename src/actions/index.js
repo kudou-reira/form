@@ -2,13 +2,12 @@ import {
 	SELECT_MEALTIME,
 	SELECT_PEOPLE,
 	SELECT_RESTAURANT,
-	SELECT_DISH,
-	SELECT_SERVINGS,
 	DISH_COLLECTION_UPDATE,
-	DISH_NUMBER,
-	SAVED_DISHES,
+	DISH_COLLECTION_RESET,
+	ADD_DISH,
 	VERIFY_LANDING,
 	VERIFY_RESTAURANT,
+	VERIFY_DISHES,
 	PAGE_INDEX ,
 	ERROR
 } from './types';
@@ -48,13 +47,6 @@ export const verifyRestaurant = (verify) => {
 	})
 }
 
-export const selectDish = (dish) => {
-	return({
-		type: SELECT_DISH,
-		payload: dish
-	})
-}
-
 export const dishCollectionUpdate = (eventKey, id) => {
 	return({
 		type: DISH_COLLECTION_UPDATE,
@@ -65,24 +57,24 @@ export const dishCollectionUpdate = (eventKey, id) => {
 	})
 }
 
-export const selectServings = (servings) => {
+export const dishCollectionReset = () => {
 	return({
-		type: SELECT_SERVINGS,
-		payload: servings
-	});
+		type: DISH_COLLECTION_RESET,
+		payload: []
+	})
 }
 
-export const saveDish = (dish) => {
+export const addDish = (dish) => {
 	return({
-		type: SAVED_DISHES,
+		type: ADD_DISH,
 		payload: dish
 	})
 }
 
-export const addDish = (num) => {
+export const verifyDishes = (verify) => {
 	return({
-		type: DISH_NUMBER,
-		payload: num
+		type: VERIFY_DISHES,
+		payload: verify
 	});
 }
 

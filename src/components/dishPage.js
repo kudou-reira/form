@@ -62,7 +62,7 @@ class DishPage extends Component {
 		super();
 
 		this.state = {
-			itemIndex: 1
+			itemIndex: 0
 		}
 
 		this.onClickPrevious = this.onClickPrevious.bind(this);
@@ -71,8 +71,8 @@ class DishPage extends Component {
 	}
 
 	componentDidMount() {
-		if(this.props.dish.dish === "----") {
-			this.props.sendError(true);
+		if(this.props.dish.dishCollection.length === 0) {
+			this.addDish();
 		}
 	}
 
@@ -90,39 +90,21 @@ class DishPage extends Component {
 		// get a ref from dropdown
 		// give this dish an id or something or ref
 		// id of 1 for first item
-		// { dish: burrito, id: 1, quantity: something }
+		// { dish: burrito, id: 1, servings: something }
 
 		// send the object here for select dish
 		// send to props, update props, by id
 		console.log("this is params index dish", index);
-		// create the object with the index, serving number, and dish
-		// var tempObject = {
-		// 	index: index,
-		// 	servingsNumber: 1,
-		// 	dish: eventKey
-		// };
 
-		// store by index
-
-		// ex.
-		// {
-		// 	index: index,
-		// 	dish: '',
-		// 	servings: 1
-		// }
-
-		this.props.saveDish(eventKey);
 		this.props.dishCollectionUpdate(eventKey, index);
-		this.props.selectDish(eventKey);
 		this.props.sendError(false);
+		this.props.verifyDishes(true);
 	}
 
 	onSelectServing = (index) => (eventKey) => {
 		// send to props, update props, by id
 		console.log("this is params index serving", index);
-
 		this.props.dishCollectionUpdate(eventKey, index);
-		// this.props.selectServings(eventKey);
 	}
 
 	renderPreviousButton() {
@@ -183,6 +165,18 @@ class DishPage extends Component {
 		);
 	}
 
+	checkIfSelectedAlready(dish) {
+		var tempCheck = this.props.dish.dishCollection.filter((dishInCollection) => {
+			return dishInCollection.dish === dish;
+		});
+
+		if(tempCheck.length === 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 	createDishItems(index) {
 		// you get index here, so check if the index of this matches up with the index of the dishCollection item
 		// if both are equal, render the dish item name in the dropdown
@@ -190,8 +184,11 @@ class DishPage extends Component {
 		// filter out the current dishCollection dish names
 		var dishes = [];
 		this.props.data.data.dishes.forEach((dish) => {
-			if(dish.restaurant === this.props.restaurant.restaurant && dish.availableMeals.includes(this.props.landing.mealtime)) {
-				dishes.push(dish.name);
+			if(dish.restaurant === this.props.restaurant.restaurant && dish.availableMeals.includes(this.props.landing.mealtime)
+				&& !this.checkIfSelectedAlready(dish.name)) {
+				if(!dishes.includes(dish.name)) {
+					dishes.push(dish.name);
+				}
 			}
 		});
 
@@ -212,7 +209,7 @@ class DishPage extends Component {
 		return dishes;
 	}
 
-	renderDishDropdown(index) {
+	renderDishDropdown(dish) {
 		// make the title of the dropdown equal to the mapped over index
 		// find the index
 		// can make it a function title={this.getTitle(index)}
@@ -220,17 +217,17 @@ class DishPage extends Component {
 		return(
 			<DropdownButton
 	      bsStyle={"default"}
-	      title={this.props.dish.dish}
+	      title={dish.dish}
 	    >
 	    	<MenuItem divider />
-	      {this.createDishItems(index)}
+	      {this.createDishItems(dish.id)}
 		  </DropdownButton>
 		);
 	}
 
-	renderDishMessage() {
+	renderDishMessage(dish) {
 		var dishMessage;
-		if(this.props.dish.dish === "----") {
+		if(dish.dish === "----") {
 			dishMessage = (
 				<div className={leftItem}>
 					<p className={error}>
@@ -241,7 +238,9 @@ class DishPage extends Component {
 		} else {
 			dishMessage = (
 				<div className={leftItem}>
-					Your dish has been selected:
+					<p>
+						Your dish has been selected:
+					</p>
 				</div>
 			);
 		}
@@ -249,11 +248,11 @@ class DishPage extends Component {
 		return dishMessage;
 	}
 
-	renderDish(index) {
+	renderDish(dish) {
 		return (
 			<div>
-				{this.renderDishMessage()}
-				{this.renderDishDropdown(index)}
+				{this.renderDishMessage(dish)}
+				{this.renderDishDropdown(dish)}
 			</div>
 		);
 	}
@@ -274,14 +273,14 @@ class DishPage extends Component {
 		return servingsItems;
 	}
 
-	renderServingsDropdown(index) {
+	renderServingsDropdown(dish) {
 		return(
 			<DropdownButton
 	      bsStyle={"default"}
-	      title={this.props.dish.servings}
+	      title={dish.servings}
 	    >
 	    	<MenuItem divider />
-	      {this.createServingsItems(index)}
+	      {this.createServingsItems(dish.id)}
 		  </DropdownButton>
 		);
 	}
@@ -300,43 +299,33 @@ class DishPage extends Component {
 		return servingsMessage;
 	}
 
-	renderServings(index) {
-		// add a check here if dishCollection is empty, return the default here
-		// if dishCollection isn't empty, map over the dishCollection, display the information, then append a new default;
+	renderServings(dish) {
 		return(
 			<div>
 				{this.renderServingsMessage()}
 				<div className={marginTop}>
-					{this.renderServingsDropdown(index)}
+					{this.renderServingsDropdown(dish)}
 				</div>
 			</div>
 		);
 	}
 
 	renderSelections() {
-		var selectionIndex = [];
+		var selections;
 		// can also use the length of the array of already stored dishes
 		// for now i'll use this, later on you also have to filter out previously selected dishes
-		// the dishes index will hold the already selected dishes
-		for(var i = 1; i <= this.props.dish.numberOfDishes; i++) {
-			selectionIndex.push(i);
-		}
 
-		var selections;
-		// instead of mapping over selections, if this.props.dish.dishCollection.length === 0
-		// render the default selection of two dropdowns
-
-		// if the dishCollection length is greater than >0
-		// return the mapped over dishCollection length, then append a default one with "----" for dish
-		selections = selectionIndex.map((index) => {
+		selections = this.props.dish.dishCollection.map((dish) => {
 			return(
-				<div className={containerItem}>
-					<div className={divFlex}>
-						<div className={leftItem}>
-							{this.renderDish(index)}
-						</div>
-						<div>
-							{this.renderServings(index)}
+				<div className={marginTop}>
+					<div className={containerItem}>
+						<div className={divFlex}>
+							<div className={leftItem}>
+								{this.renderDish(dish)}
+							</div>
+							<div>
+								{this.renderServings(dish)}
+							</div>
 						</div>
 					</div>
 				</div>
@@ -348,7 +337,23 @@ class DishPage extends Component {
 
 	addDish() {
 		// append a new element to dishCollection with the title ("----") and an id of whatever it's on
-		this.props.addDish(1 + this.props.dish.numberOfDishes);
+		var id = 0;
+		// make id the last element of the dish, then add 1
+		if(this.props.dish.dishCollection.length === 0) {
+			id = 1;
+		} else {
+			id = this.props.dish.dishCollection[this.props.dish.dishCollection.length - 1].id + 1;
+		}
+
+		// create the object to be added;
+		var tempObject = {
+			id: id,
+			dish: "----",
+			servings: 1
+		}
+		this.props.addDish(tempObject);
+		this.props.sendError(true);
+		
 	}
 
 	renderAddDish() {
@@ -364,8 +369,18 @@ class DishPage extends Component {
 		);
 	}
 
+	renderCustomerError() {
+		// sum up all values in quantity/inventory
+		if(this.props.dish.dishCollection.length !== 0) {
+			var sum = this.props.dish.dishCollection.reduce((a, b) => {
+				return {servings: a.servings + b.servings}
+			});
+			console.log("this is the sum of all dishCollection", sum.servings);
+			// send an error message if there's a problem, check docs for directions
+		}
+	}
+
 	render() {
-		console.log("this is number of dish selections", this.props.dish.selections);
 		return(
 			<div className={marginTitle}>
 				<div className={marginTop}>
@@ -373,13 +388,16 @@ class DishPage extends Component {
 				</div>
 				<div className={containerItem}>
 					<div className={divFlex}>
-						<div>
+						<div className={marginTop}>
 							{this.renderAddDish()}
 						</div>
 					</div>
 				</div>
 				<div className={marginTop}>
 					{this.renderNavigationButtons()}
+				</div>
+				<div className={marginTop}>
+					{this.renderCustomerError()}
 				</div>
 			</div>
 		);

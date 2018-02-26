@@ -67,6 +67,8 @@ class LandingPage extends Component {
 		}
 	}
 
+
+
  	componentWillReceiveProps(nextProps){
  		console.log("this is nextProps", nextProps);
     	if(nextProps.landing.mealtime !== this.props.landing.mealtime || 
@@ -80,9 +82,38 @@ class LandingPage extends Component {
 				this.props.verifyLanding(true);
 			}
     	}
+
+    	if(nextProps.landing.mealtime !== this.props.landing.mealtime) {
+			// console.log("this is the current mealtime", this.props.landing.mealtime);
+			// console.log("this is nextProps mealtime", nextProps.landing.mealtime);
+			// console.log("this is the current restaurant", this.props.restaurant.restaurant);
+			// console.log("this is the result from checkRestaurant", this.checkRestaurant(nextProps));
+			if(!this.checkRestaurant(nextProps)) {
+				this.props.selectRestaurant("----");
+			}
+    	}
+    }
+
+    checkRestaurant(nextProps) {
+    	// if restaurant is in mealtime, keep it
+    	// else selectRestaurant update "----"
+    	var tempRestaurant = this.props.restaurant.restaurant;
+    	var restaurants = [];
+		this.props.data.data.dishes.forEach((restaurant) => {
+			if(restaurant.availableMeals.includes(nextProps.landing.mealtime) && !restaurants.includes(restaurant.restaurant)) {
+				restaurants.push(restaurant.restaurant);
+			}
+		});
+
+		if(restaurants.includes(tempRestaurant)) {
+			return true;
+		} 
+
+		return false;
     }
 
 	onSelectMealtime(eventKey) {
+		var temp = this.props.landing.mealtime;
 		this.props.selectMealtime(eventKey);
 	}
 
@@ -321,7 +352,8 @@ function mapStateToProps(state) {
 	return {
 		landing: state.landing,
 		data: state.data,
-		error: state.error
+		error: state.error,
+		restaurant: state.restaurant
 	}
 }
 

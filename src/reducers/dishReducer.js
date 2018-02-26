@@ -1,27 +1,23 @@
 import {
-  SELECT_DISH,
-  SELECT_SERVINGS,
-  DISH_NUMBER,
   DISH_COLLECTION_UPDATE,
-  SAVED_DISHES
+  ADD_DISH,
+  DISH_COLLECTION_RESET,
+  VERIFY_DISHES
 } from '../actions/types';
 
 const INITIAL_STATE = {
-	dish: "----",
-	savedDishes: [],
-	numberOfDishes: 1,
-	servings: 1,
-	dishCollection: []
+	dishCollection: [],
+	verifyDishes: false
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  	case SELECT_DISH:
-  		return {...state, dish: action.payload}
-  	case DISH_NUMBER:
-  		return {...state, numberOfDishes: action.payload}
-  	case SELECT_SERVINGS:
-  		return {...state, servings: action.payload}
+  	case ADD_DISH:
+  		return {...state, dishCollection: [...state.dishCollection, action.payload]};
+  	case VERIFY_DISHES:
+      return {...state, verifyDishes: action.payload}
+  	case DISH_COLLECTION_RESET:
+  		return {...state, dishCollection: []}
   	case DISH_COLLECTION_UPDATE:
   		var eventKey = action.payload.eventKey;
   		var type = typeof(eventKey);
@@ -66,8 +62,6 @@ export default (state = INITIAL_STATE, action) => {
 			    };
   			}
   		}
-  	case SAVED_DISHES:
-  		return {...state, savedDishes: [...state.savedDishes, action.payload]}
     default:
       return state;
   }

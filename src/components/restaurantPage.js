@@ -63,14 +63,15 @@ class RestaurantPage extends Component {
 
 	componentWillReceiveProps(nextProps){
  		console.log("this is nextProps", nextProps);
-    	if(nextProps.restaurant.restaurant !== this.props.restaurant.restaurant) {
-    		if(nextProps.restaurant.restaurant === "----") {
+    if(nextProps.restaurant.restaurant !== this.props.restaurant.restaurant) {
+    	if(nextProps.restaurant.restaurant === "----") {
 				this.props.sendError(true);
 			}
 			else {
 				console.log("there is no error");
 				this.props.sendError(false);
 				this.props.verifyRestaurant(true);
+				this.props.dishCollectionReset();
 			}
   	}
   }
