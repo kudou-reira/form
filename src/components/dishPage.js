@@ -4,9 +4,6 @@ import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
-const containerOverall = css`
-	margin-top: 1%;
-`
 const containerItem = css`
 	margin-top: 1%;
 	margin:0 auto;
@@ -34,10 +31,6 @@ const marginTop = css`
   margin-top: 2.5%;
 `
 
-const marginTop2 = css`
-  margin-top: 4%;
-`
-
 const marginTitle = css`
   margin-top: 2%;
 `
@@ -60,9 +53,8 @@ const buttonCircle = css`
 class DishPage extends Component {
 	constructor() {
 		super();
-
 		this.state = {
-			itemIndex: 0
+			recordedDishes: []
 		}
 
 		this.onClickPrevious = this.onClickPrevious.bind(this);
@@ -74,7 +66,42 @@ class DishPage extends Component {
 		if(this.props.dish.dishCollection.length === 0) {
 			this.addDish();
 		}
+
+		var dishes = this.createDishArray();
+		this.props.recordDishes(dishes);
 	}
+
+	componentWillReceiveProps(nextProps){
+ 		console.log("this is nextProps", nextProps);
+ 		if(this.props.dish.dishCollection !== nextProps.dish.dishCollection) {
+ 			console.log("next servings", this.calculateServings(nextProps.dish).servings);
+ 			var tempServings = this.calculateServings(nextProps.dish).servings;
+ 			var number = nextProps.landing.numberOfPeople;
+ 			console.log("this is nextpropslength", number);
+
+ 			if(tempServings === 10) {
+				this.props.sendErrorServing(true);
+				this.props.sendError(false);
+			} else if(tempServings <= 10 && tempServings >= nextProps.landing.numberOfPeople) {
+				this.props.sendError(false);
+				this.props.verifyDishes(true);
+				this.props.sendErrorServing(false);
+			} else if(tempServings < nextProps.landing.numberOfPeople) {
+				this.props.sendError(true);
+				this.props.sendErrorServing(false);
+				this.props.verifyDishes(false);
+			} else if(tempServings > 10) {
+				this.props.sendErrorServing(true);
+				this.props.sendError(true);
+				this.props.verifyDishes(false);
+			} 
+
+			if(nextProps.dish.dishCollection.length === nextProps.dish.recordDishes.length) {
+				console.log("send errorserving firing");
+				this.props.sendErrorServing(true);
+			}
+ 		}
+  }
 
 	onClickPrevious() {
 		this.props.sendPageIndex(2);
@@ -94,32 +121,15 @@ class DishPage extends Component {
 
 		// send the object here for select dish
 		// send to props, update props, by id
+
 		console.log("this is params index dish", index);
-
 		this.props.dishCollectionUpdate(eventKey, index);
-
-		// clear errors
-		if(this.calculateServings().servings <= 10 && this.calculateServings().servings > this.props.dish.dishCollection.length) {
-			this.props.sendError(false);
-			this.props.verifyDishes(true);
-		}
 	}
 
 	onSelectServing = (index) => (eventKey) => {
 		// send to props, update props, by id
-		console.log("this is params index serving", index);
+		console.log("this is params index for serving", index);
 		this.props.dishCollectionUpdate(eventKey, index);
-
-		console.log("this is onSelectServing");
-		console.log("this is calculateServings", this.calculateServings());
-		console.log("this is dishCollection", this.props.dish.dishCollection.length);
-
-		// clear errors
-		if(this.calculateServings().servings <= 10 && this.calculateServings().servings > this.props.dish.dishCollection.length) {
-			console.log("serving on select firing?");
-			this.props.sendError(false);
-			this.props.verifyDishes(true);
-		}
 	}
 
 	renderPreviousButton() {
@@ -192,11 +202,7 @@ class DishPage extends Component {
 		}
 	}
 
-	createDishItems(index) {
-		// you get index here, so check if the index of this matches up with the index of the dishCollection item
-		// if both are equal, render the dish item name in the dropdown
-		// if they aren't, filter it out
-		// filter out the current dishCollection dish names
+	createDishArray() {
 		var dishes = [];
 		this.props.data.data.dishes.forEach((dish) => {
 			if(dish.restaurant === this.props.restaurant.restaurant && dish.availableMeals.includes(this.props.landing.mealtime)
@@ -207,13 +213,18 @@ class DishPage extends Component {
 			}
 		});
 
+		return dishes;
+	}
+
+	createDishItems(index) {
+		// you get index here, so check if the index of this matches up with the index of the dishCollection item
+		// if both are equal, render the dish item name in the dropdown
+		// if they aren't, filter it out
+		// filter out the current dishCollection dish names
+		var dishes = this.createDishArray();
+
 		console.log("this is dishes", dishes);
 		console.log("this is the index", index);
-
-		// send an object to selectDish
-		// { dish: burrito, quantity: 1 }
-		// when the quantity is updated, send another redux update
-		// mark the quantity dropdown with a name somehow
 
 		dishes = dishes.map((dish) => {
 			return(
@@ -379,6 +390,7 @@ class DishPage extends Component {
 		}
 		this.props.addDish(tempObject);
 		this.props.sendError(true);
+		this.props.sendErrorServing(true);
 	}
 
 	renderAddDish() {
@@ -386,7 +398,7 @@ class DishPage extends Component {
 			<div>
 				<Button className={buttonCircle} 
 					onClick={this.addDish} 
-					disabled={this.props.error.error}
+					disabled={this.props.error.errorServing}
 				>
 					+
 				</Button>
@@ -394,9 +406,9 @@ class DishPage extends Component {
 		);
 	}
 
-	calculateServings() {
+	calculateServings(props) {
 		var sum;
-		sum = this.props.dish.dishCollection.filter((dish) => {
+		sum = props.dishCollection.filter((dish) => {
 			return dish.dish !== "----";
 		})
 		console.log("this is the current to be summed array", sum);
@@ -419,7 +431,7 @@ class DishPage extends Component {
 		var customerError = "";
 		if(this.props.dish.dishCollection.length !== 0) {
 			// filter out "----" first
-			var sum = this.calculateServings();
+			var sum = this.calculateServings(this.props.dish);
 
 			console.log("this is the sum of all dishCollection", sum.servings);
 			// send an error message if there's a problem, check docs for directions

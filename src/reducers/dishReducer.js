@@ -1,19 +1,23 @@
 import {
   DISH_COLLECTION_UPDATE,
   ADD_DISH,
+  RECORD_DISHES,
   DISH_COLLECTION_RESET,
   VERIFY_DISHES
 } from '../actions/types';
 
 const INITIAL_STATE = {
 	dishCollection: [],
-	verifyDishes: false
+	verifyDishes: false,
+	recordDishes: 0
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
   	case ADD_DISH:
   		return {...state, dishCollection: [...state.dishCollection, action.payload]};
+  	case RECORD_DISHES:
+  		return {...state, recordDishes: action.payload}
   	case VERIFY_DISHES:
       return {...state, verifyDishes: action.payload}
   	case DISH_COLLECTION_RESET:

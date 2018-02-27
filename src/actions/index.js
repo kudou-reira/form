@@ -4,6 +4,7 @@ import {
 	SELECT_RESTAURANT,
 	DISH_COLLECTION_UPDATE,
 	DISH_COLLECTION_RESET,
+	RECORD_DISHES,
 	ADD_DISH,
 	VERIFY_LANDING,
 	VERIFY_RESTAURANT,
@@ -70,6 +71,13 @@ export const addDish = (dish) => {
 		type: ADD_DISH,
 		payload: dish
 	})
+}
+
+export const recordDishes = (dishes) => {
+	return({
+		type: RECORD_DISHES,
+		payload: dishes
+	});
 }
 
 export const verifyDishes = (verify) => {

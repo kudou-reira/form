@@ -84,36 +84,14 @@ class LandingPage extends Component {
     	}
 
     	if(nextProps.landing.mealtime !== this.props.landing.mealtime) {
-			// console.log("this is the current mealtime", this.props.landing.mealtime);
-			// console.log("this is nextProps mealtime", nextProps.landing.mealtime);
-			// console.log("this is the current restaurant", this.props.restaurant.restaurant);
-			// console.log("this is the result from checkRestaurant", this.checkRestaurant(nextProps));
-			if(!this.checkRestaurant(nextProps)) {
-				this.props.selectRestaurant("----");
-			}
+			this.props.selectRestaurant("----");
+			this.props.dishCollectionReset();
+			this.props.verifyRestaurant(false);
+			this.props.verifyDishes(false);
     	}
     }
 
-    checkRestaurant(nextProps) {
-    	// if restaurant is in mealtime, keep it
-    	// else selectRestaurant update "----"
-    	var tempRestaurant = this.props.restaurant.restaurant;
-    	var restaurants = [];
-		this.props.data.data.dishes.forEach((restaurant) => {
-			if(restaurant.availableMeals.includes(nextProps.landing.mealtime) && !restaurants.includes(restaurant.restaurant)) {
-				restaurants.push(restaurant.restaurant);
-			}
-		});
-
-		if(restaurants.includes(tempRestaurant)) {
-			return true;
-		} 
-
-		return false;
-    }
-
 	onSelectMealtime(eventKey) {
-		var temp = this.props.landing.mealtime;
 		this.props.selectMealtime(eventKey);
 	}
 

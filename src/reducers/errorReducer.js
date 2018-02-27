@@ -4,7 +4,8 @@ import {
 } from '../actions/types';
 
 const INITIAL_STATE = {
-	error: true
+	error: true,
+	errorServing: true
 };
 
 export default (state = INITIAL_STATE, action) => {

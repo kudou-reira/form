@@ -4,9 +4,6 @@ import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
-const containerOverall = css`
-	margin-top: 1%;
-`
 const containerItem = css`
 	margin-top: 1%;
 	margin:0 auto;
@@ -32,10 +29,6 @@ const leftItem = css`
 
 const marginTop = css`
   margin-top: 2.5%;
-`
-
-const marginTop2 = css`
-  margin-top: 4%;
 `
 
 const marginTitle = css`
@@ -68,6 +61,8 @@ class RestaurantPage extends Component {
 				this.props.sendError(true);
 			}
 			else {
+				// what case to use when nextProps and this.props are different
+				// you want to close off the verify restaurant if they change, ie set to false
 				console.log("there is no error");
 				this.props.sendError(false);
 				this.props.verifyRestaurant(true);
