@@ -97,14 +97,29 @@ class DishPage extends Component {
 		console.log("this is params index dish", index);
 
 		this.props.dishCollectionUpdate(eventKey, index);
-		this.props.sendError(false);
-		this.props.verifyDishes(true);
+
+		// clear errors
+		if(this.calculateServings().servings <= 10 && this.calculateServings().servings > this.props.dish.dishCollection.length) {
+			this.props.sendError(false);
+			this.props.verifyDishes(true);
+		}
 	}
 
 	onSelectServing = (index) => (eventKey) => {
 		// send to props, update props, by id
 		console.log("this is params index serving", index);
 		this.props.dishCollectionUpdate(eventKey, index);
+
+		console.log("this is onSelectServing");
+		console.log("this is calculateServings", this.calculateServings());
+		console.log("this is dishCollection", this.props.dish.dishCollection.length);
+
+		// clear errors
+		if(this.calculateServings().servings <= 10 && this.calculateServings().servings > this.props.dish.dishCollection.length) {
+			console.log("serving on select firing?");
+			this.props.sendError(false);
+			this.props.verifyDishes(true);
+		}
 	}
 
 	renderPreviousButton() {
@@ -202,7 +217,12 @@ class DishPage extends Component {
 
 		dishes = dishes.map((dish) => {
 			return(
-				<MenuItem eventKey={dish} onSelect={this.onSelectDish(index)}>{dish}</MenuItem>
+				<MenuItem 
+					eventKey={dish} 
+					onSelect={this.onSelectDish(index)}
+				>
+					{dish}
+				</MenuItem>
 			);
 		});
 
@@ -218,6 +238,7 @@ class DishPage extends Component {
 			<DropdownButton
 	      bsStyle={"default"}
 	      title={dish.dish}
+	      id={"dishNames"}
 	    >
 	    	<MenuItem divider />
 	      {this.createDishItems(dish.id)}
@@ -266,7 +287,12 @@ class DishPage extends Component {
 
 		servingsItems = servings.map((serving) => {
 			return(
-				<MenuItem eventKey={serving} onSelect={this.onSelectServing(index)}>{serving}</MenuItem>
+				<MenuItem 
+					eventKey={serving} 
+					onSelect={this.onSelectServing(index)}
+				>
+					{serving}
+				</MenuItem>
 			);
 		});
 
@@ -353,7 +379,6 @@ class DishPage extends Component {
 		}
 		this.props.addDish(tempObject);
 		this.props.sendError(true);
-		
 	}
 
 	renderAddDish() {
@@ -369,15 +394,58 @@ class DishPage extends Component {
 		);
 	}
 
-	renderCustomerError() {
-		// sum up all values in quantity/inventory
-		if(this.props.dish.dishCollection.length !== 0) {
-			var sum = this.props.dish.dishCollection.reduce((a, b) => {
+	calculateServings() {
+		var sum;
+		sum = this.props.dish.dishCollection.filter((dish) => {
+			return dish.dish !== "----";
+		})
+		console.log("this is the current to be summed array", sum);
+
+		if(sum.length !== 0) {
+			sum = sum.reduce((a, b) => {
 				return {servings: a.servings + b.servings}
 			});
+		} else if(sum.length === 0) {
+			sum = {
+				servings: 0
+			};
+		}
+
+		return sum;
+	}
+
+	renderCustomerError() {
+		// sum up all values in quantity/inventory
+		var customerError = "";
+		if(this.props.dish.dishCollection.length !== 0) {
+			// filter out "----" first
+			var sum = this.calculateServings();
+
 			console.log("this is the sum of all dishCollection", sum.servings);
 			// send an error message if there's a problem, check docs for directions
+			if(sum.servings > 10) {
+				customerError = (
+					<div className={error}>
+						<p>
+							The number of dishes has exceeded the maximum allowed amount of 10!
+						</p>
+					</div>
+				);
+			} else if(sum.servings < this.props.landing.numberOfPeople) {
+				customerError = (
+					<div className={error}>
+						<p>
+							The number of servings ({sum.servings}) is less than the number of customers ({this.props.landing.numberOfPeople})!
+						</p>
+						<p>
+							Someone doesn't have enough to eat!
+						</p>
+					</div>
+				);
+			}
 		}
+
+		return customerError;
 	}
 
 	render() {
@@ -394,10 +462,10 @@ class DishPage extends Component {
 					</div>
 				</div>
 				<div className={marginTop}>
-					{this.renderNavigationButtons()}
+					{this.renderCustomerError()}
 				</div>
 				<div className={marginTop}>
-					{this.renderCustomerError()}
+					{this.renderNavigationButtons()}
 				</div>
 			</div>
 		);

@@ -9,3 +9,4 @@ export const VERIFY_RESTAURANT = 'verify_restaurant';
 export const VERIFY_DISHES = "verify_dishes";
 export const PAGE_INDEX = 'page_index';
 export const ERROR = 'error';
+export const ERROR_SERVING = 'error_serving';

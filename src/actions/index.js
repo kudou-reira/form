@@ -9,7 +9,8 @@ import {
 	VERIFY_RESTAURANT,
 	VERIFY_DISHES,
 	PAGE_INDEX ,
-	ERROR
+	ERROR,
+	ERROR_SERVING
 } from './types';
 
 export const selectMealtime = (mealtime) => {
@@ -88,6 +89,13 @@ export const sendPageIndex = (index) => {
 export const sendError = (err) => {
 	return({
 		type: ERROR,
+		payload: err
+	});
+}
+
+export const sendErrorServing = (err) => {
+	return({
+		type: ERROR_SERVING,
 		payload: err
 	});
 }

@@ -190,9 +190,15 @@ class LandingPage extends Component {
 
 		console.log("this is orderedMealtimes", orderedMealtimes);
 
-		mealtimesMenuItem = orderedMealtimes.map((meal) => {
+		mealtimesMenuItem = orderedMealtimes.map((meal, index) => {
 			return(
-				<MenuItem eventKey={meal.mealtime} onSelect={this.onSelectMealtime}>{meal.mealtime.charAt(0).toUpperCase() + meal.mealtime.slice(1)}</MenuItem>
+				<MenuItem 
+					eventKey={meal.mealtime} 
+					onSelect={this.onSelectMealtime}
+					key={index}
+				>
+					{meal.mealtime.charAt(0).toUpperCase() + meal.mealtime.slice(1)}
+				</MenuItem>
 			);
 		})
 
