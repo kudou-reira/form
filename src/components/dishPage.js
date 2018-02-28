@@ -7,7 +7,7 @@ import * as actions from '../actions';
 const containerItem = css`
 	margin-top: 1%;
 	margin:0 auto;
-	width: 44%;
+	width: 54%;
 `
 
 const containerItem2 = css`
@@ -29,6 +29,10 @@ const leftItem = css`
 
 const marginTop = css`
   margin-top: 2.5%;
+`
+
+const marginTop2 = css`
+  margin-top: 7.5%;
 `
 
 const marginTitle = css`
@@ -60,6 +64,7 @@ class DishPage extends Component {
 		this.onClickPrevious = this.onClickPrevious.bind(this);
 		this.onClickNext = this.onClickNext.bind(this);
 		this.addDish = this.addDish.bind(this);
+		this.deleteDish = this.deleteDish.bind(this);
 	}
 
 	componentDidMount() {
@@ -100,6 +105,13 @@ class DishPage extends Component {
 				console.log("send errorserving firing");
 				this.props.sendErrorServing(true);
 			}
+
+			// filter through dishCollection, if there is a dish name with "----", verify(false) and sendError
+			var improper = nextProps.dish.dishCollection.filter(dish => (dish.dish === "----"));
+			if(improper.length > 0 && nextProps.dish.dishCollection.length !== 1) {
+				this.props.sendError(true);
+				this.props.verifyDishes(false);
+			}
  		}
   }
 
@@ -111,6 +123,10 @@ class DishPage extends Component {
 	onClickNext() {
 		this.props.sendPageIndex(4);
 		this.props.history.push('/reviewPage');
+	}
+
+	deleteDish(id) {
+		this.props.deleteDish(id);
 	}
 
 	onSelectDish = (index) => (eventKey) => {
@@ -364,6 +380,9 @@ class DishPage extends Component {
 								{this.renderServings(dish)}
 							</div>
 						</div>
+						<div className={divFlex}>
+							{this.renderDeleteDish(dish)}
+						</div>
 					</div>
 				</div>
 			);
@@ -393,9 +412,25 @@ class DishPage extends Component {
 		this.props.sendErrorServing(true);
 	}
 
+	renderDeleteDish(dish) {
+		console.log("this is renderDeleteDish's dish param", dish);
+		if(this.props.dish.dishCollection.length !== 1) {
+			return(
+				<div>
+					<Button 
+						className={buttonCircle} 
+						onClick={() => this.deleteDish(dish.id)}
+					>
+						-
+					</Button>
+				</div>
+			);
+		}
+	}
+
 	renderAddDish() {
 		return(
-			<div>
+			<div className={marginTop2}>
 				<Button className={buttonCircle} 
 					onClick={this.addDish} 
 					disabled={this.props.error.errorServing}
@@ -468,7 +503,7 @@ class DishPage extends Component {
 				</div>
 				<div className={containerItem}>
 					<div className={divFlex}>
-						<div className={marginTop}>
+						<div className={marginTop2}>
 							{this.renderAddDish()}
 						</div>
 					</div>

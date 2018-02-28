@@ -2,6 +2,7 @@ export const SELECT_MEALTIME = 'select_mealtime';
 export const SELECT_PEOPLE = 'select_people';
 export const SELECT_RESTAURANT = 'select_restaurant';
 export const ADD_DISH = 'add_dish';
+export const DELETE_DISH = 'delete_dish';
 export const RECORD_DISHES = 'record_dishes';
 export const DISH_COLLECTION_RESET = 'dish_collection_reset';
 export const DISH_COLLECTION_UPDATE = 'dish_collection_update';

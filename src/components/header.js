@@ -47,6 +47,7 @@ class Header extends Component {
 		// have to make this sliding
 		// put the verification for verifyLanding at the last
 		// this is because you want to check whichever one is the most recently verified
+		// probably want to add a verifyReview, and don't render header on that page
 		if(this.props.dish.verifyDishes) {
 			availableButtons = (
 				<ToggleButtonGroup type="radio" name="options" value={this.props.pageIndex.page}>

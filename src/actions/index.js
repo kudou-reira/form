@@ -6,6 +6,7 @@ import {
 	DISH_COLLECTION_RESET,
 	RECORD_DISHES,
 	ADD_DISH,
+	DELETE_DISH,
 	VERIFY_LANDING,
 	VERIFY_RESTAURANT,
 	VERIFY_DISHES,
@@ -70,6 +71,13 @@ export const addDish = (dish) => {
 	return({
 		type: ADD_DISH,
 		payload: dish
+	})
+}
+
+export const deleteDish = (id) => {
+	return({
+		type: DELETE_DISH,
+		payload: id
 	})
 }
 

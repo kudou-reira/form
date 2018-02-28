@@ -1,6 +1,7 @@
 import {
   DISH_COLLECTION_UPDATE,
   ADD_DISH,
+  DELETE_DISH,
   RECORD_DISHES,
   DISH_COLLECTION_RESET,
   VERIFY_DISHES
@@ -16,6 +17,9 @@ export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
   	case ADD_DISH:
   		return {...state, dishCollection: [...state.dishCollection, action.payload]};
+  	case DELETE_DISH:
+  		let index = state.dishCollection.findIndex((dish) => dish.id === action.payload); 
+  		return {...state, dishCollection: [...state.dishCollection.slice(0, index), ...state.dishCollection.slice(index+1)]};
   	case RECORD_DISHES:
   		return {...state, recordDishes: action.payload}
   	case VERIFY_DISHES:

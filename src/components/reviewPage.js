@@ -53,7 +53,7 @@ class ReviewPage extends Component {
 	}
 
 	onClickSubmit() {
-		this.props.sendPageIndex(5);
+		this.props.sendPageIndex(4);
 		this.props.history.push('/submittedPage');
 
 		// console log all the stuff
