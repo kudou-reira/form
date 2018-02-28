@@ -9,6 +9,7 @@ export const DISH_COLLECTION_UPDATE = 'dish_collection_update';
 export const VERIFY_LANDING = 'verify_landing';
 export const VERIFY_RESTAURANT = 'verify_restaurant';
 export const VERIFY_DISHES = "verify_dishes";
+export const VERIFY_SUBMITTED = "verify_submitted";
 export const PAGE_INDEX = 'page_index';
 export const ERROR = 'error';
 export const ERROR_SERVING = 'error_serving';

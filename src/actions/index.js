@@ -10,6 +10,7 @@ import {
 	VERIFY_LANDING,
 	VERIFY_RESTAURANT,
 	VERIFY_DISHES,
+	VERIFY_SUBMITTED,
 	PAGE_INDEX ,
 	ERROR,
 	ERROR_SERVING
@@ -93,6 +94,13 @@ export const verifyDishes = (verify) => {
 		type: VERIFY_DISHES,
 		payload: verify
 	});
+}
+
+export const verifySubmitted = (verify) => {
+	return({
+		type: VERIFY_SUBMITTED,
+		payload: verify
+	})
 }
 
 export const sendPageIndex = (index) => {

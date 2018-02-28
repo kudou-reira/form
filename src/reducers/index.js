@@ -4,6 +4,7 @@ import restaurantReducer from './restaurantReducer';
 import pageIndexReducer from './pageIndexReducer';
 import dataReducer from './dataReducer';
 import dishReducer from './dishReducer';
+import submittedReducer from './submittedReducer';
 import errorReducer from './errorReducer';
 
 export default combineReducers({
@@ -12,6 +13,7 @@ export default combineReducers({
 	pageIndex: pageIndexReducer,
 	data: dataReducer,
 	dish: dishReducer,
+	submitted: submittedReducer,
 	error: errorReducer
 });
 

@@ -16,6 +16,12 @@ const containerItem2 = css`
 	width: 35%;
 `
 
+const containerItem3 = css`
+	margin-top: 1%;
+	margin:0 auto;
+	width: 70%;
+`
+
 const divFlex = css`
   display:-webkit-flex;
   display:flex;
@@ -418,6 +424,7 @@ class DishPage extends Component {
 			return(
 				<div>
 					<Button 
+						bsStyle="danger"
 						className={buttonCircle} 
 						onClick={() => this.deleteDish(dish.id)}
 					>
@@ -501,7 +508,7 @@ class DishPage extends Component {
 				<div className={marginTop}>
 					{this.renderSelections()}
 				</div>
-				<div className={containerItem}>
+				<div className={containerItem3}>
 					<div className={divFlex}>
 						<div className={marginTop2}>
 							{this.renderAddDish()}
