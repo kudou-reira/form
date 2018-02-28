@@ -7,13 +7,13 @@ import {
   VERIFY_DISHES
 } from '../actions/types';
 
-const INITIAL_STATE = {
+const initialState = {
 	dishCollection: [],
 	verifyDishes: false,
 	recordDishes: 0
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
   	case ADD_DISH:
   		return {...state, dishCollection: [...state.dishCollection, action.payload]};

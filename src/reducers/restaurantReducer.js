@@ -3,12 +3,12 @@ import {
   VERIFY_RESTAURANT
 } from '../actions/types';
 
-const INITIAL_STATE = {
+const initialState = {
 	restaurant: '----',
   verifyRestaurant: false
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
   	case SELECT_RESTAURANT:
   		return {...state, restaurant: action.payload}

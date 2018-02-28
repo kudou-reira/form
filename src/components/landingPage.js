@@ -74,22 +74,22 @@ class LandingPage extends Component {
     	if(nextProps.landing.mealtime !== this.props.landing.mealtime || 
     		nextProps.landing.numberOfPeople !== this.props.landing.numberOfPeople) {
     		if(nextProps.landing.mealtime === "----" || nextProps.landing.numberOfPeople === "----") {
-				this.props.sendError(true);
-			}
-			else {
-				console.log("there is no error");
-				this.props.sendError(false);
-				this.props.verifyLanding(true);
-			}
+					this.props.sendError(true);
+				}
+				else {
+					console.log("there is no error");
+					this.props.sendError(false);
+					this.props.verifyLanding(true);
+				}
     	}
 
     	if(nextProps.landing.mealtime !== this.props.landing.mealtime) {
-			this.props.selectRestaurant("----");
-			this.props.dishCollectionReset();
-			this.props.verifyRestaurant(false);
-			this.props.verifyDishes(false);
+				this.props.selectRestaurant("----");
+				this.props.dishCollectionReset();
+				this.props.verifyRestaurant(false);
+				this.props.verifyDishes(false);
     	}
-    }
+   }
 
 	onSelectMealtime(eventKey) {
 		this.props.selectMealtime(eventKey);

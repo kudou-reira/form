@@ -4,13 +4,17 @@ import {
   VERIFY_LANDING
 } from '../actions/types';
 
-const INITIAL_STATE = {
+// export const initialState = {
+//   hi: 'yes'
+// }
+
+export const initialState = {
 	mealtime: '----',
 	numberOfPeople: "----",
   verifyLanding: false
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
   	case SELECT_MEALTIME:
   		return {...state, mealtime: action.payload}

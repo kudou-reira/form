@@ -94,11 +94,22 @@ class Header extends Component {
 
 	render() {
 		// do a conditional here to render button availability if this.props.submitted.verifySubmitted is true of false
-		return(
-			<div className={containerOverall}>
-		    {this.renderButtonAvailability()}
-			</div>
-		);
+		var header;
+
+		if(this.props.submitted.verifySubmitted) {
+			header = (
+				<div>
+				</div>
+			);
+		} else {
+			header = (
+				<div className={containerOverall}>
+			    {this.renderButtonAvailability()}
+				</div>
+			);
+		}
+		
+		return header;
 	}
 }
 

@@ -2,11 +2,11 @@ import {
   VERIFY_SUBMITTED
 } from '../actions/types';
 
-const INITIAL_STATE = {
+const initialState = {
 	verifySubmitted: false
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
   	case VERIFY_SUBMITTED:
       return {...state, verifySubmitted: action.payload}

@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LandingPage /> renders with default props 1`] = `
+<LandingPage
+  addDish={[Function]}
+  deleteDish={[Function]}
+  dishCollectionReset={[Function]}
+  dishCollectionUpdate={[Function]}
+  recordDishes={[Function]}
+  selectMealtime={[Function]}
+  selectPeople={[Function]}
+  selectRestaurant={[Function]}
+  sendError={[Function]}
+  sendErrorServing={[Function]}
+  sendPageIndex={[Function]}
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+  storeSubscription={
+    Subscription {
+      "listeners": Object {
+        "clear": [Function],
+        "get": [Function],
+        "notify": [Function],
+        "subscribe": [Function],
+      },
+      "onStateChange": [Function],
+      "parentSub": undefined,
+      "store": Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "unsubscribe": [Function],
+    }
+  }
+  verifyDishes={[Function]}
+  verifyLanding={[Function]}
+  verifyRestaurant={[Function]}
+  verifySubmitted={[Function]}
+/>
+`;

@@ -1,9 +1,9 @@
 import data from '../lib/dishes.json';
 
-const INITIAL_STATE = {
+const initialState = {
 	data: data
 };
 
-export default (state = INITIAL_STATE) => {
+export default (state = initialState) => {
 	return state;
 }

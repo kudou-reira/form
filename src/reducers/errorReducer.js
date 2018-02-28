@@ -3,12 +3,12 @@ import {
   ERROR_SERVING
 } from '../actions/types';
 
-const INITIAL_STATE = {
+const initialState = {
 	error: true,
 	errorServing: true
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
   	case ERROR:
   		return {...state, error: action.payload}
