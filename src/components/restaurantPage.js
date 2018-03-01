@@ -55,21 +55,19 @@ class RestaurantPage extends Component {
 	}
 
 	componentWillReceiveProps(nextProps){
- 		console.log("this is nextProps", nextProps);
-    if(nextProps.restaurant.restaurant !== this.props.restaurant.restaurant) {
-    	if(nextProps.restaurant.restaurant === "----") {
-				this.props.sendError(true);
-			}
-			else {
-				// what case to use when nextProps and this.props are different
-				// you want to close off the verify restaurant if they change, ie set to false
-				console.log("there is no error");
-				this.props.sendError(false);
-				this.props.verifyRestaurant(true);
-				this.props.dishCollectionReset();
-			}
-  	}
-  }
+	    if(nextProps.restaurant.restaurant !== this.props.restaurant.restaurant) {
+	    	if(nextProps.restaurant.restaurant === "----") {
+					this.props.sendError(true);
+				}
+				else {
+					// what case to use when nextProps and this.props are different
+					// you want to close off the verify restaurant if they change, ie set to false
+					this.props.sendError(false);
+					this.props.verifyRestaurant(true);
+					this.props.dishCollectionReset();
+				}
+	  	}
+	}
 
 	onClickPrevious() {
 		this.props.sendPageIndex(1);
@@ -203,7 +201,6 @@ class RestaurantPage extends Component {
 				<MenuItem eventKey={restaurant} onSelect={this.onSelectRestaurant}>{restaurant}</MenuItem>
 			);
 		});
-		// console.log("this is availableRestaurants", availableRestaurants);
 		return restaurants;
 	}
 

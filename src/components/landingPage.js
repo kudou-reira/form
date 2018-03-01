@@ -70,14 +70,12 @@ class LandingPage extends Component {
 
 
  	componentWillReceiveProps(nextProps){
- 		console.log("this is nextProps", nextProps);
     	if(nextProps.landing.mealtime !== this.props.landing.mealtime || 
     		nextProps.landing.numberOfPeople !== this.props.landing.numberOfPeople) {
     		if(nextProps.landing.mealtime === "----" || nextProps.landing.numberOfPeople === "----") {
 					this.props.sendError(true);
 				}
 				else {
-					console.log("there is no error");
 					this.props.sendError(false);
 					this.props.verifyLanding(true);
 				}
@@ -166,8 +164,6 @@ class LandingPage extends Component {
 			}
 		});
 
-		console.log("this is orderedMealtimes", orderedMealtimes);
-
 		mealtimesMenuItem = orderedMealtimes.map((meal, index) => {
 			return(
 				<MenuItem 
@@ -232,7 +228,6 @@ class LandingPage extends Component {
 	}
 
 	onClickNext() {
-		console.log("this is onclicknext");
 		this.props.sendPageIndex(2);
 		this.props.history.push('/restaurantPage');
 	}
@@ -311,8 +306,6 @@ class LandingPage extends Component {
 	}
 
 	render() {
-		console.log("this is data reducer", this.props.data.data.dishes);
-
 		return(
 			<div className={containerOverall}>
 				<div className={marginTitle}>

@@ -83,12 +83,9 @@ class DishPage extends Component {
 	}
 
 	componentWillReceiveProps(nextProps){
- 		console.log("this is nextProps", nextProps);
  		if(this.props.dish.dishCollection !== nextProps.dish.dishCollection) {
- 			console.log("next servings", this.calculateServings(nextProps.dish).servings);
  			var tempServings = this.calculateServings(nextProps.dish).servings;
  			var number = nextProps.landing.numberOfPeople;
- 			console.log("this is nextpropslength", number);
 
  			if(tempServings === 10) {
 				this.props.sendErrorServing(true);
@@ -108,7 +105,6 @@ class DishPage extends Component {
 			} 
 
 			if(nextProps.dish.dishCollection.length === nextProps.dish.recordDishes.length) {
-				console.log("send errorserving firing");
 				this.props.sendErrorServing(true);
 			}
 
@@ -136,21 +132,11 @@ class DishPage extends Component {
 	}
 
 	onSelectDish = (index) => (eventKey) => {
-		// get a ref from dropdown
-		// give this dish an id or something or ref
-		// id of 1 for first item
-		// { dish: burrito, id: 1, servings: something }
-
-		// send the object here for select dish
-		// send to props, update props, by id
-
-		console.log("this is params index dish", index);
 		this.props.dishCollectionUpdate(eventKey, index);
 	}
 
 	onSelectServing = (index) => (eventKey) => {
 		// send to props, update props, by id
-		console.log("this is params index for serving", index);
 		this.props.dishCollectionUpdate(eventKey, index);
 	}
 
@@ -244,9 +230,6 @@ class DishPage extends Component {
 		// if they aren't, filter it out
 		// filter out the current dishCollection dish names
 		var dishes = this.createDishArray();
-
-		console.log("this is dishes", dishes);
-		console.log("this is the index", index);
 
 		dishes = dishes.map((dish) => {
 			return(
@@ -419,7 +402,6 @@ class DishPage extends Component {
 	}
 
 	renderDeleteDish(dish) {
-		console.log("this is renderDeleteDish's dish param", dish);
 		if(this.props.dish.dishCollection.length !== 1) {
 			return(
 				<div>
@@ -453,7 +435,6 @@ class DishPage extends Component {
 		sum = props.dishCollection.filter((dish) => {
 			return dish.dish !== "----";
 		})
-		console.log("this is the current to be summed array", sum);
 
 		if(sum.length !== 0) {
 			sum = sum.reduce((a, b) => {
@@ -475,7 +456,6 @@ class DishPage extends Component {
 			// filter out "----" first
 			var sum = this.calculateServings(this.props.dish);
 
-			console.log("this is the sum of all dishCollection", sum.servings);
 			// send an error message if there's a problem, check docs for directions
 			if(sum.servings > 10) {
 				customerError = (
