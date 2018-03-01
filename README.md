@@ -1,4 +1,7 @@
 Form assignment
+- git clone this repository
+- npm install
+- npm run start to start the project!
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
