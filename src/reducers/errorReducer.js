@@ -3,7 +3,7 @@ import {
   ERROR_SERVING
 } from '../actions/types';
 
-const initialState = {
+export const initialState = {
 	error: true,
 	errorServing: true
 };

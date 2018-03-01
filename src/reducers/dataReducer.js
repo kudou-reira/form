@@ -1,6 +1,6 @@
 import data from '../lib/dishes.json';
 
-const initialState = {
+export const initialState = {
 	data: data
 };
 

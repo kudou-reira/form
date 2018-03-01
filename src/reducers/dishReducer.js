@@ -7,7 +7,7 @@ import {
   VERIFY_DISHES
 } from '../actions/types';
 
-const initialState = {
+export const initialState = {
 	dishCollection: [],
 	verifyDishes: false,
 	recordDishes: 0

@@ -3,7 +3,7 @@ import {
   VERIFY_RESTAURANT
 } from '../actions/types';
 
-const initialState = {
+export const initialState = {
 	restaurant: '----',
   verifyRestaurant: false
 };

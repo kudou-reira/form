@@ -2,7 +2,7 @@ import {
   VERIFY_SUBMITTED
 } from '../actions/types';
 
-const initialState = {
+export const initialState = {
 	verifySubmitted: false
 };
 

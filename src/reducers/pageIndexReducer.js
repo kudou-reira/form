@@ -2,7 +2,7 @@ import {
   PAGE_INDEX
 } from '../actions/types';
 
-const initialState = {
+export const initialState = {
 	page: 1
 };
 
